@@ -16,7 +16,7 @@ on:
         default: 'main'
   
 jobs:
-  build_velodyne_ros:
+  build_nmea_gps_ros:
     runs-on: ubuntu-20.04
 
     steps:
