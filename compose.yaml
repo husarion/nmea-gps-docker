@@ -1,0 +1,13 @@
+services:
+
+  nmea-gps:
+    image: husarion/nmea-gps:noetic
+    container_name: nmea-gps
+    network_mode: host
+    environment:
+      - ROS_MASTER_URI=http://10.15.20.2:11311
+    command: >
+      rosrun nmea_navsat_driver nmea_socket_driver 
+        __ns:=panther
+        _port:=5000 
+        _local_ip:=10.15.20.2
