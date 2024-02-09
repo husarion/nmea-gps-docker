@@ -1,3 +1,6 @@
+---
+name: Build/Publish ROS Docker Image
+
 on:
   workflow_dispatch:
     inputs:
