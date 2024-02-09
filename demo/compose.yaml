@@ -1,9 +1,11 @@
 services:
 
   nmea-gps:
-    image: husarion/nmea-gps:humble
+    image: husarion/nmea-gps:humble-nightly
     network_mode: host
     volumes:
       - ./params:/params
     command: >
-      ros2 run nmea_navsat_driver nmea_socket_driver --ros-args --params-file /params/nmea_socket_driver.yaml
+      ros2 run nmea_navsat_driver nmea_socket_driver --ros-args
+      --params-file /params/nmea_socket_driver.yaml
+      -r __ns:=panther

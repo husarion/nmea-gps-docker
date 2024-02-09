@@ -20,7 +20,7 @@ RUN apt-get update  && \
     rosdep install --from-paths src -y -i && \
     source /opt/ros/$ROS_DISTRO/setup.bash && \
     colcon build --cmake-args -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release && \
-    echo $(cat /ros2_ws/src/rosbot/package.xml | grep '<version>' | sed -r 's/.*<version>([0-9]+.[0-9]+.[0-9]+)<\/version>/\1/g') >> /version.txt
+    echo $(cat /ros2_ws/src/nmea_navsat_driver/package.xml | grep '<version>' | sed -r 's/.*<version>([0-9]+.[0-9]+.[0-9]+)<\/version>/\1/g') >> /version.txt
 
 ## =========================== Final Stage ===============================
 FROM husarnet/ros:${PREFIX}${ROS_DISTRO}-ros-core
@@ -48,6 +48,3 @@ RUN apt-get update && apt-get install -y \
     rm -rf src && \
     rm -rf /var/lib/apt/lists/*
 
-
-COPY ./ros_entrypoint.sh /
-ENTRYPOINT [ "/ros_entrypoint.sh" ]
