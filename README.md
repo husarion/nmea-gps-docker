@@ -3,7 +3,7 @@
 </h1>
 
 
-The repository includes a GitHub Actions workflow that automatically deploys built Docker images to the [husarion/nmea-gps-docker](https://hub.docker.com/r/husarion/nmea-gps) Docker Hub repositories. This process is based on the [ros-drivers/nmea_navsat_driver]((https://github.com/ros-drivers/nmea_navsat_driver/tree/ros2)) repository.
+The repository includes a GitHub Actions workflow that automatically deploys built Docker images to the [husarion/nmea-gps-docker](https://hub.docker.com/r/husarion/nmea-gps) Docker Hub repositories. This process is based on the [ros-drivers/nmea_navsat_driver](https://github.com/ros-drivers/nmea_navsat_driver/tree/ros2) repository.
 
 [![.github/workflows/build-docker-image.yaml](https://github.com/husarion/nmea-gps-docker/actions/workflows/build-docker-image.yaml/badge.svg?branch=ros2)](https://github.com/husarion/nmea-gps-docker/actions/workflows/build-docker-image.yaml)
 ### GPS API
