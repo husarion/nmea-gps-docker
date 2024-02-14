@@ -1,7 +1,5 @@
 ARG ROS_DISTRO=humble
 ARG PREFIX=
-
-## =========================== Final Stage ===============================
 FROM husarnet/ros:${PREFIX}${ROS_DISTRO}-ros-core
 
 ARG ROS_DISTRO
