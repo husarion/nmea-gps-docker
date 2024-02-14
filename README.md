@@ -1,19 +1,72 @@
-<h1 align="center">
-  Docker Images for a GPS module
-</h1>
+[//]: # (ROS_API_PACKAGE_START)
+[//]: # (ROS_API_PACKAGE_NAME_START)
 
+# nmea-gps-docker
+
+[//]: # (ROS_API_PACKAGE_NAME_END)
+[//]: # (ROS_API_PACKAGE_DESCRIPTION_START)
 
 The repository includes a GitHub Actions workflow that automatically deploys built Docker images to the [husarion/nmea-gps-docker](https://hub.docker.com/r/husarion/nmea-gps) Docker Hub repositories. This process is based on the [ros-drivers/nmea_navsat_driver](https://github.com/ros-drivers/nmea_navsat_driver/tree/ros2) repository.
 
 [![.github/workflows/build-docker-image.yaml](https://github.com/husarion/nmea-gps-docker/actions/workflows/build-docker-image.yaml/badge.svg?branch=ros2)](https://github.com/husarion/nmea-gps-docker/actions/workflows/build-docker-image.yaml)
-### GPS API
+
+[//]: # (ROS_API_PACKAGE_DESCRIPTION_END)
+
+## ROS Nodes
+
+[//]: # (ROS_API_NODE_START)
+
+[//]: # (ROS_API_NODE_COMPATIBLE_1_0)
+[//]: # (ROS_API_NODE_COMPATIBLE_1_2)
+
+[//]: # (ROS_API_NODE_NAME_START)
+
+### nmea_navsat_driver
+
+[//]: # (ROS_API_NODE_NAME_END)
+[//]: # (ROS_API_NODE_DESCRIPTION_START)
+
+ROS 2 driver to parse NMEA strings and publish standard ROS 2 NavSatFix message types. Does not require the GPSD daemon to be running.
+
+[//]: # (ROS_API_NODE_DESCRIPTION_END)
+
+#### Publishers
+
+[//]: # (ROS_API_NODE_PUBLISHERS_START)
+
+- `~/fix` [*sensor_msgs/msg/NavSatFix*]: GPS position fix reported by the device. This will be published with whatever positional and status data was available even if the device doesn't have a valid fix. Invalid fields may contain NaNs.
+- `~/heading` [*geometry_msgs/msg/QuaternionStamped*]: stamped orientation of heading.
+-  `~/time_reference` [*sensor_msgs/msg/TimeReference*]: The timestamp from the GPS device is used as the `time_ref``.
+- `~/vel` [*geometry_msgs/msg/TwistStamped*]: Velocity output from the GPS device. Only published when the device outputs valid velocity information. The driver does not calculate the velocity based on only position fixes.
+
+[//]: # (ROS_API_NODE_PUBLISHERS_END)
+
+#### Parameters
+
+[//]: # (ROS_API_NODE_PARAMETERS_START)
+
+Node GPS parameters:
+- `~/time_ref_source` [*string*, default: **'gps'**]: The value to use as the source in the `sensor_msgs/msg/TimeReference`.
+- `~/useRMC` [*bool*, default: **False**]: Whether to generate position fixes from GGA sentences or RMC sentences. If True, fixes will be generated from RMC. If False, fixes will be generated based on the GGA sentences. Using GGA sentences allows for approximated covariance output while RMC provides velocity information.
+- `~/frame_id` [*string*, default: **'gps'**]: The`frame_id` for the header of the `sensor_msgs/msg/NavSatFix` and `geometry_msgs/msg/TwistStamped` output messages. Will be resolved with `tf_prefix` if defined.
+- `~/tf_prefix` [*string*, default: **''**]: Adds prefix to the `frame_id`.
+
+`nmea_socket_driver.py` parameters:
+- `~/ip` [*string*, default: **'0.0.0.0'**]: The ip of socket server.
+- `~/port` [*int*, default: **10110**]: The port of socket server.
+- `~/buffer_size` [*int*, default: **4096**]: Communication buffer.
+- `~/timeout_sec` [*double*, default: **2**]: Timeout during waiting for packages in the socket.
+
+[//]: # (ROS_API_NODE_PARAMETERS_END)
+
+[//]: # (ROS_API_NODE_END)
+
+# Panther Demo
 
 GPS data in [NMEA](https://en.wikipedia.org/wiki/NMEA_0183) format is forwarded to RPi IP address at port 5000, typically it is `10.15.20.2:5000`.
-You can make sure the address is correct by typing [http://10.15.20.1](http://10.15.20.1) into your browser (Username: `admin`, Password: `Husarion1`). Navigate to `Services -> GPS -> NMEA -> NMEA forwarding -> Hostname and Port`. Remember that you must be connected to the robot's WIFi network. If changes were needed, finish the connfiguration by pressing `save & apply` at the bottom of the screen.
+You can make sure the address is correct by typing [http://10.15.20.1](http://10.15.20.1) into your browser (Username: `admin`, Password: `Husarion1`). Navigate to `Services -> GPS -> NMEA -> NMEA forwarding -> Hostname and Port`. Remember that you must be connected to the robot's WIFi network. If changes were needed, finish the configuration by pressing `save & apply` at the bottom of the screen.
 
 Data frequency is 1Hz and can be interacted ether with GPSD daemon (`gpsd -N udp://10.15.20.2:5000`) or directly with [ROS package](https://github.com/ros-drivers/nmea_navsat_driver/tree/ros2) redirecting signal to ROS 2 topic.
-
-## Demo
 
 It is recommended to use docker image. To start the container type:
 
