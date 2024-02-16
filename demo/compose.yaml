@@ -2,6 +2,7 @@ services:
   nmea-gps:
     image: husarion/nmea-gps:humble-2.0.1-20240209
     network_mode: host
+    restart: always
     volumes:
       - ./params:/params
     command: >
