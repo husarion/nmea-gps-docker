@@ -25,4 +25,5 @@ RUN apt-get update && apt-get install -y \
     rm -rf src build && \
     rm -rf /var/lib/apt/lists/*
 
-COPY husarion_utils /husarion_utils
+COPY demo/config/ /config
+COPY demo/nmea_navsat.launch.py /

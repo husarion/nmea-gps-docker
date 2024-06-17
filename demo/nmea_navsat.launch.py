@@ -35,7 +35,7 @@ def generate_launch_description():
     params_file = LaunchConfiguration("params_file")
     declare_params_file_arg = DeclareLaunchArgument(
         "params_file",
-        default_value="/husarion_utils/nmea_navsat_params.yaml",
+        default_value="/config/nmea_navsat_params.yaml",
         description="Path to the parameter file for the nmea_socket_driver node.",
     )
 

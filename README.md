@@ -53,10 +53,10 @@ You should be able to see data on `/panther/gps/fix` topic (`ros2 topic echo /pa
 
 ### Launch Parameters
 
-Contained within the image is a custom `/husarion_utils/nmea_navsat.launch.py`, which is not included in the ROS 2 package for the `nmea_navsat_driver`. This was specifically added to facilitate seamless integration with Husarion robots. The following parameters are included in this launch file:
+Contained within the image is a custom `/nmea_navsat.launch.py`, which is not included in the ROS 2 package for the `nmea_navsat_driver`. This was specifically added to facilitate seamless integration with Husarion robots. The following parameters are included in this launch file:
 
 | **Parameter**      | **Description**                                                                                                                                       | **Default Value**                                |
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| `params_file`      | Path to the parameter file for the nmea_socket_driver node.                                                                                           | `/husarion_utils/nmea_navsat_params.yaml`        |
+| `params_file`      | Path to the parameter file for the nmea_socket_driver node.                                                                                           | `/config/nmea_navsat_params.yaml`                |
 | `robot_namespace`  | Namespace to all launched nodes and use namespace as tf_prefix. This aids in differentiating between multiple robots with the same devices.           | `env("ROBOT_NAMESPACE")` (`""` if not specified) |
 | `device_namespace` | Namespace for the device, utilized in TF frames and preceding device topics. This aids in differentiating between multiple cameras on the same robot. | `gps`                                            |

@@ -4,5 +4,5 @@ services:
     network_mode: host
     restart: always
     command: >
-      ros2 launch /husarion_utils/nmea_navsat.launch.py
+      ros2 launch /nmea_navsat.launch.py
         robot_namespace:=panther
