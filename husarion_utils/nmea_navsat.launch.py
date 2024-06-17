@@ -15,8 +15,12 @@
 # limitations under the License.
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, LogInfo
-from launch.substitutions import EnvironmentVariable, LaunchConfiguration, PythonExpression
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import (
+    EnvironmentVariable,
+    LaunchConfiguration,
+    PythonExpression,
+)
 from launch_ros.actions import Node
 
 
@@ -42,7 +46,9 @@ def generate_launch_description():
         description="Namespace to all launched nodes and use namespace as tf_prefix. This aids in differentiating between multiple robots with the same devices.",
     )
 
-    tf_prefix = PythonExpression(["'", robot_namespace, "/' if '", robot_namespace, "' != '' else ''"])
+    tf_prefix = PythonExpression(
+        ["'", robot_namespace, "/' if '", robot_namespace, "' != '' else ''"]
+    )
 
     nmea_driver = Node(
         package="nmea_navsat_driver",
@@ -69,7 +75,6 @@ def generate_launch_description():
             declare_params_file_arg,
             declare_robot_namespace_arg,
             declare_device_namespace_arg,
-            log_robot_namespace,
             nmea_driver,
         ]
     )
