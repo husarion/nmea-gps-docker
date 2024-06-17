@@ -25,4 +25,4 @@ RUN apt-get update && apt-get install -y \
     rm -rf src build && \
     rm -rf /var/lib/apt/lists/*
 
-COPY demo/params /params
+COPY husarion_utils /husarion_utils
