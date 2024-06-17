@@ -24,3 +24,6 @@ RUN apt-get update && apt-get install -y \
     apt-get clean && \
     rm -rf src build && \
     rm -rf /var/lib/apt/lists/*
+
+COPY demo/config/ /config
+COPY demo/nmea_navsat.launch.py /

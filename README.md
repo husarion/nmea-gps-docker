@@ -14,24 +14,26 @@ ROS 2 driver to parse NMEA strings and publish standard ROS 2 NavSatFix message 
 
 - `~/fix` [*sensor_msgs/msg/NavSatFix*]: GPS position fix reported by the device. This will be published with whatever positional and status data was available even if the device doesn't have a valid fix. Invalid fields may contain NaNs.
 - `~/heading` [*geometry_msgs/msg/QuaternionStamped*]: stamped orientation of heading.
--  `~/time_reference` [*sensor_msgs/msg/TimeReference*]: The timestamp from the GPS device is used as the `time_ref``.
+- `~/time_reference` [*sensor_msgs/msg/TimeReference*]: The timestamp from the GPS device is used as the `time_ref``.
 - `~/vel` [*geometry_msgs/msg/TwistStamped*]: Velocity output from the GPS device. Only published when the device outputs valid velocity information. The driver does not calculate the velocity based on only position fixes.
 
 #### Parameters
 
 Node GPS parameters:
+
 - `~/time_ref_source` [*string*, default: **'gps'**]: The value to use as the source in the `sensor_msgs/msg/TimeReference`.
 - `~/useRMC` [*bool*, default: **False**]: Whether to generate position fixes from GGA sentences or RMC sentences. If True, fixes will be generated from RMC. If False, fixes will be generated based on the GGA sentences. Using GGA sentences allows for approximated covariance output while RMC provides velocity information.
 - `~/frame_id` [*string*, default: **'gps'**]: The`frame_id` for the header of the `sensor_msgs/msg/NavSatFix` and `geometry_msgs/msg/TwistStamped` output messages. Will be resolved with `tf_prefix` if defined.
 - `~/tf_prefix` [*string*, default: **''**]: Adds prefix to the `frame_id`.
 
 `nmea_socket_driver.py` parameters:
+
 - `~/ip` [*string*, default: **'0.0.0.0'**]: The ip of socket server.
 - `~/port` [*int*, default: **10110**]: The port of socket server.
 - `~/buffer_size` [*int*, default: **4096**]: Communication buffer.
 - `~/timeout_sec` [*double*, default: **2**]: Timeout during waiting for packages in the socket.
 
-# Panther Demo
+## Panther Demo
 
 GPS data in [NMEA](https://en.wikipedia.org/wiki/NMEA_0183) format is forwarded to RPi IP address at port 5000, typically it is `10.15.20.2:5000`.
 You can make sure the address is correct by typing [http://10.15.20.1](http://10.15.20.1) into your browser (Username: `admin`, Password: `Husarion1`). Navigate to `Services -> GPS -> NMEA -> NMEA forwarding -> Hostname and Port`. Remember that you must be connected to the robot's WIFi network. If changes were needed, finish the configuration by pressing `save & apply` at the bottom of the screen.
@@ -47,4 +49,14 @@ cd nmea-gps-docker/demo
 docker compose up
 ```
 
-You should be able to see data on `/panther/fix` topic (`ros2 topic echo /panther/fix`).
+You should be able to see data on `/panther/gps/fix` topic (`ros2 topic echo /panther/gps/fix`).
+
+### Launch Parameters
+
+Contained within the image is a custom `/nmea_navsat.launch.py`, which is not included in the ROS 2 package for the `nmea_navsat_driver`. This was specifically added to facilitate seamless integration with Husarion robots. The following parameters are included in this launch file:
+
+| **Parameter**      | **Description**                                                                                                                                       | **Default Value**                                |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| `params_file`      | Path to the parameter file for the nmea_socket_driver node.                                                                                           | `/config/nmea_navsat_params.yaml`                |
+| `robot_namespace`  | Namespace to all launched nodes and use namespace as tf_prefix. This aids in differentiating between multiple robots with the same devices.           | `env("ROBOT_NAMESPACE")` (`""` if not specified) |
+| `device_namespace` | Namespace for the device, utilized in TF frames and preceding device topics. This aids in differentiating between multiple cameras on the same robot. | `gps`                                            |
