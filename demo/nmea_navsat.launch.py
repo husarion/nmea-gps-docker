@@ -16,12 +16,9 @@
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.substitutions import (
-    EnvironmentVariable,
-    LaunchConfiguration,
-    PythonExpression,
-)
+from launch.substitutions import EnvironmentVariable, LaunchConfiguration
 from launch_ros.actions import Node
+from nav2_common.launch import ReplaceString
 
 
 def generate_launch_description():
@@ -46,8 +43,9 @@ def generate_launch_description():
         description="Namespace to all launched nodes and use namespace as tf_prefix. This aids in differentiating between multiple robots with the same devices.",
     )
 
-    tf_prefix = PythonExpression(
-        ["'", robot_namespace, "/' if '", robot_namespace, "' != '' else ''"]
+    rename_params_file = ReplaceString(
+        source_file=params_file,
+        replacements={"<device_namespace>": device_namespace, "//": "/"},
     )
 
     nmea_driver = Node(
@@ -58,9 +56,9 @@ def generate_launch_description():
         parameters=[
             {
                 "frame_id": device_namespace,
-                "tf_prefix": tf_prefix,
+                "tf_prefix": robot_namespace,
             },
-            params_file,
+            rename_params_file,
         ],
         remappings=[
             ("fix", "~/fix"),

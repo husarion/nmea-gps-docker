@@ -1,5 +1,5 @@
 ---
-/**:
+/**/<device_namespace>:
   ros__parameters:
     ip: 10.15.20.2
     port: 5000

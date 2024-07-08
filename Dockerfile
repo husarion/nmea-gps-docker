@@ -10,7 +10,9 @@ SHELL ["/bin/bash", "-c"]
 WORKDIR /ros2_ws
 
 RUN apt-get update && apt-get install -y \
-        ros-dev-tools python3-transforms3d && \
+        python3-transforms3d \
+        ros-dev-tools \
+        ros-${ROS_DISTRO}-nav2-common && \
     git clone -b ros2 https://github.com/ros-drivers/nmea_navsat_driver.git src/nmea_navsat_driver && \
     rosdep init && \
     rosdep update --rosdistro $ROS_DISTRO && \
