@@ -1,8 +1,10 @@
 services:
   nmea-gps:
-    image: husarion/nmea-gps:humble-2.0.1-20240617
+    image: husarion/nmea-gps:humble-2.0.1-20240708
     network_mode: host
     restart: always
+    volumes:
+      - ./config/nmea_navsat_params.yaml:/config/nmea_navsat_params.yaml
     command: >
       ros2 launch /nmea_navsat.launch.py
         robot_namespace:=panther
